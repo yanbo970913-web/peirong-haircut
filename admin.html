@@ -275,7 +275,7 @@
     <div class="otp-screen" id="otp-input-screen">
       <p style="font-size:.7rem;color:rgba(200,169,110,.6);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem;">✂ 管理員後台</p>
       <h2 class="otp-title">輸入管理員密碼</h2>
-      <p class="otp-sub">請輸入密碼，每個字元顯示為一格<br/>輸入完畢按 Enter 驗證</p>
+      <p class="otp-sub">每個字元顯示為一格 ●<br/>輸入完畢按 Enter 驗證</p>
 
       <!-- Boxes rendered dynamically by JS -->
       <div class="otp-boxes" id="otp-boxes"></div>
@@ -360,6 +360,18 @@
           <div class="field"><label>主打價格</label><input id="f-hero_price" placeholder="NT$200"/></div>
           <div class="field"><label>Hero 描述</label><textarea id="f-hero_desc" rows="3"></textarea></div>
           <div class="field"><label>頁尾版權</label><input id="f-footer_copy"/></div>
+        </div>
+        <div class="card">
+          <div class="card-head">👩 關於我們 / 老闆娘簡介</div>
+          <div class="field"><label>標題</label><input id="f-about_title" placeholder="前台電大樓捷運站快剪"/></div>
+          <div class="field"><label>簡介內容</label><textarea id="f-about_desc" rows="4"></textarea></div>
+          <div class="field"><label>經驗年數</label><input id="f-stat_years" placeholder="20+"/></div>
+          <div class="field"><label>收費數字</label><input id="f-stat_price" placeholder="200"/></div>
+          <div class="field">
+            <label>老闆娘照片路徑</label>
+            <input id="f-owner_photo" placeholder="images/owner.png"/>
+            <p class="hint">照片請放在 <code>images/</code> 資料夾，填入相對路徑</p>
+          </div>
         </div>
       </div>
 
@@ -681,6 +693,7 @@ function switchTab(btn, id){
 ════════════════════════════════════ */
 const SIMPLE_FIELDS = [
   'site_name','site_tagline','hero_price','hero_desc',
+  'about_title','about_desc','stat_years','stat_price','owner_photo',
   'hours','hours_note','pricing','pricing_note',
   'booking','booking_note','phone','line_id',
   'contact_title','contact_sub','address','mrt','bus','footer_copy'
