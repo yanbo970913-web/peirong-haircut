@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="沛蓉百元剪髮｜台北汀洲路三段，前台電大樓捷運站，只要100元的專業快剪服務" />
+  <meta property="og:title" content="沛蓉百元剪髮" />
+  <meta property="og:description" content="前台電大樓捷運站百元快剪｜週二至週日 10:00–19:00" />
+  <title>沛蓉百元剪髮</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Shippori+Mincho+B1:wght@400;600;800&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ░░ NOISE OVERLAY ░░ -->
+  <div class="noise"></div>
+
+  <!-- ░░ HEADER ░░ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <span class="logo-icon">✂</span>
+        <div class="logo-text">
+          <h1 class="logo-title" id="site-name">沛蓉百元剪髮</h1>
+          <p class="logo-sub" id="site-tagline">前台電大樓捷運站 · 百元快剪</p>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="#info">資訊</a>
+        <a href="#location">位置</a>
+        <a href="#contact">聯絡</a>
+        <a href="admin.html" class="nav-admin-link" title="管理員登入">⚙</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ░░ HERO ░░ -->
+  <section class="hero">
+    <div class="hero-bg-lines"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">台北 · 大安區</p>
+      <h2 class="hero-headline">
+        <span class="hero-price" id="hero-price">NT$100</span>
+        <span class="hero-cut">專業快剪</span>
+      </h2>
+      <p class="hero-desc" id="hero-desc">乾淨俐落，不需預約，現場等候即可<br/>歡迎預約 Line 優先服務</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="https://line.me/ti/p/0980455650" target="_blank" rel="noopener">
+          <span class="btn-icon">💬</span> LINE 預約
+        </a>
+        <a class="btn btn-ghost" href="tel:0980455650">
+          <span class="btn-icon">📞</span> 立即來電
+        </a>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <svg class="scissors-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="35" cy="30" r="14" stroke="currentColor" stroke-width="3.5"/>
+        <circle cx="85" cy="30" r="14" stroke="currentColor" stroke-width="3.5"/>
+        <line x1="46" y1="38" x2="95" y2="100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="74" y1="38" x2="25" y2="100" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="35" y1="44" x2="60" y2="70" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+        <line x1="85" y1="44" x2="60" y2="70" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ░░ INFO CARDS ░░ -->
+  <section class="info-section" id="info">
+    <div class="section-label">服務資訊</div>
+    <div class="cards-grid">
+
+      <div class="info-card">
+        <div class="card-icon">🕐</div>
+        <h3 class="card-title">營業時間</h3>
+        <p class="card-body" id="hours">週二 ─ 週日<br/><strong>10:00 – 19:00</strong></p>
+        <p class="card-note" id="hours-note">週一公休</p>
+      </div>
+
+      <div class="info-card info-card--featured">
+        <div class="card-icon">💴</div>
+        <h3 class="card-title">收費方式</h3>
+        <p class="card-body" id="pricing">剪髮一次 <strong>100元</strong><br/>只收現金</p>
+        <p class="card-note" id="pricing-note">不含洗髮，歡迎自備</p>
+      </div>
+
+      <div class="info-card">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">預約方式</h3>
+        <p class="card-body" id="booking">加 LINE 即可預約<br/>現場等候亦可</p>
+        <p class="card-note" id="booking-note">預約優先入場</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ DIVIDER ░░ -->
+  <div class="ornament-divider">
+    <span>— ✂ —</span>
+  </div>
+
+  <!-- ░░ LOCATION ░░ -->
+  <section class="location-section" id="location">
+    <div class="section-label">店面位置</div>
+    <div class="location-inner">
+      <div class="location-info">
+        <h2 class="location-title">如何到達</h2>
+        <ul class="location-list">
+          <li>
+            <span class="loc-icon">📍</span>
+            <span id="address">台北市大安區汀洲路三段59號<br/>（前台電大樓一樓）</span>
+          </li>
+          <li>
+            <span class="loc-icon">🚇</span>
+            <span id="mrt">捷運公館站或台電大樓站步行可達</span>
+          </li>
+          <li>
+            <span class="loc-icon">🚌</span>
+            <span id="bus">多路公車汀洲路站下車</span>
+          </li>
+        </ul>
+        <a class="btn btn-outline" id="map-link"
+           href="https://maps.google.com/?q=台北市大安區汀洲路三段59號"
+           target="_blank" rel="noopener">
+          在 Google Maps 開啟
+        </a>
+      </div>
+      <div class="map-embed">
+        <iframe
+          src="https://maps.google.com/maps?q=25.018054,121.528086&z=17&output=embed"
+          width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade" title="沛蓉百元剪髮位置"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ CONTACT ░░ -->
+  <section class="contact-section" id="contact">
+    <div class="section-label">聯絡我們</div>
+    <div class="contact-inner">
+      <h2 class="contact-title" id="contact-title">隨時歡迎您</h2>
+      <p class="contact-sub" id="contact-sub">有任何問題或想預約，請透過以下方式聯絡</p>
+      <div class="contact-methods">
+        <a class="contact-card" href="tel:0980455650">
+          <span class="contact-icon">📞</span>
+          <span class="contact-label">電話</span>
+          <span class="contact-value" id="phone">0980-455-650</span>
+        </a>
+        <a class="contact-card" href="https://line.me/ti/p/0980455650" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-label">LINE</span>
+          <span class="contact-value" id="line-id">0980455650</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="site-footer">
+    <p class="footer-copy" id="footer-copy">© 2025 沛蓉百元剪髮 · 台北市大安區汀洲路三段59號</p>
+  </footer>
+
+  <script src="js/content.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
