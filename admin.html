@@ -24,6 +24,8 @@
     /* ── LOGIN OTP ── */
     #login-screen{position:fixed;inset:0;z-index:9999;background:#0e0e0e;display:flex;align-items:center;justify-content:center;overflow:hidden;}
     #login-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(200,169,110,.06) 0%,transparent 70%);}
+    /* Hidden real input to capture keyboard */
+    #otp-hidden-input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;}
 
     /* Phone mockup card */
     .otp-card{
@@ -103,28 +105,9 @@
     .otp-error-msg{font-size:.75rem;color:#e05a2b;margin-top:.3rem;min-height:1.1rem;letter-spacing:.04em;transition:opacity .2s;}
     .otp-hint{font-size:.66rem;color:rgba(255,255,255,.2);margin-top:.9rem;letter-spacing:.06em;}
 
-    /* Number pad */
-    .numpad{padding:0 1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-    .numpad-key{
-      background:#252525;border:none;border-radius:14px;
-      height:56px;font-size:1.2rem;font-weight:600;color:#fff;
-      cursor:pointer;transition:background .15s ease,transform .1s ease;
-      display:flex;align-items:center;justify-content:center;
-      position:relative;overflow:hidden;
-    }
-    .numpad-key:active{background:#333;transform:scale(.93);}
-    .numpad-key.del{font-size:.9rem;color:rgba(255,255,255,.55);}
-    .numpad-key.del:active{background:#2a1a1a;}
-    /* ripple */
-    .numpad-key .ripple{
-      position:absolute;border-radius:50%;
-      background:rgba(200,169,110,.25);
-      width:0;height:0;
-      transform:translate(-50%,-50%);
-      animation:ripple .5s ease-out;
-      pointer-events:none;
-    }
-    @keyframes ripple{to{width:120px;height:120px;opacity:0;}}
+    /* Tap to focus hint */
+    .otp-tap-hint{font-size:.72rem;color:rgba(255,255,255,.25);margin-top:1.2rem;letter-spacing:.06em;animation:tapPulse 2s ease-in-out infinite;}
+    @keyframes tapPulse{0%,100%{opacity:.4;}50%{opacity:.9;}}
 
     /* Success screen */
     .otp-success{padding:3rem 2rem 1.5rem;text-align:center;}
@@ -281,40 +264,24 @@
 <body>
 
 <!-- LOGIN OTP -->
-<div id="login-screen">
+<div id="login-screen" onclick="focusOTP()">
+  <!-- Hidden real input captures all keyboard / mobile input -->
+  <input id="otp-hidden-input" type="password" autocomplete="current-password" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+
   <div class="otp-card">
     <div class="otp-notch"></div>
 
     <!-- Input screen -->
     <div class="otp-screen" id="otp-input-screen">
       <p style="font-size:.7rem;color:rgba(200,169,110,.6);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem;">✂ 管理員後台</p>
-      <h2 class="otp-title">輸入管理員 PIN</h2>
-      <p class="otp-sub">請輸入 4 位數字 PIN 碼<br/>驗證成功後自動進入後台</p>
+      <h2 class="otp-title">輸入管理員密碼</h2>
+      <p class="otp-sub">請輸入密碼，每個字元顯示為一格<br/>輸入完畢按 Enter 驗證</p>
 
-      <div class="otp-boxes" id="otp-boxes">
-        <div class="otp-box active" id="b0"><span class="otp-cursor"></span></div>
-        <div class="otp-box" id="b1"></div>
-        <div class="otp-box" id="b2"></div>
-        <div class="otp-box" id="b3"></div>
-      </div>
+      <!-- Boxes rendered dynamically by JS -->
+      <div class="otp-boxes" id="otp-boxes"></div>
       <p class="otp-error-msg" id="otp-err"></p>
-      <p class="otp-hint">預設 PIN：2025</p>
-    </div>
-
-    <!-- Numpad -->
-    <div class="numpad" id="otp-numpad">
-      <button class="numpad-key" onclick="numInput('1')">1</button>
-      <button class="numpad-key" onclick="numInput('2')">2</button>
-      <button class="numpad-key" onclick="numInput('3')">3</button>
-      <button class="numpad-key" onclick="numInput('4')">4</button>
-      <button class="numpad-key" onclick="numInput('5')">5</button>
-      <button class="numpad-key" onclick="numInput('6')">6</button>
-      <button class="numpad-key" onclick="numInput('7')">7</button>
-      <button class="numpad-key" onclick="numInput('8')">8</button>
-      <button class="numpad-key" onclick="numInput('9')">9</button>
-      <button class="numpad-key" style="visibility:hidden;"></button>
-      <button class="numpad-key" onclick="numInput('0')">0</button>
-      <button class="numpad-key del" onclick="numDelete()">⌫</button>
+      <p class="otp-tap-hint" id="otp-tap">點此處或直接輸入</p>
+      <p class="otp-hint">預設密碼：peirong2025</p>
     </div>
 
     <!-- Success screen -->
@@ -464,9 +431,9 @@
         <div class="card">
           <div class="card-head">🔐 變更管理員密碼</div>
           <div class="field">
-            <label>新 PIN（4位數字）</label>
+            <label>新密碼（英數字，至少4碼）</label>
             <div class="pwd-row">
-              <input type="number" id="new-pwd" placeholder="例：1234" maxlength="4" pattern="\d{4}"/>
+              <input type="password" id="new-pwd" placeholder="新密碼" autocomplete="new-password"/>
               <button class="pwd-apply" onclick="changePwd()">確認</button>
             </div>
           </div>
@@ -540,9 +507,9 @@
 <script src="js/content.js"></script>
 <script>
 /* ════════════════════════════════════
-   AUTH — OTP PIN
+   AUTH — OTP ALPHANUMERIC
 ════════════════════════════════════ */
-const DEFAULT_PWD = '2025';   // 4-digit default PIN
+const DEFAULT_PWD = 'peirong2025';
 const K_PWD  = 'pr_pwd';
 const K_AUTH = 'pr_auth';
 const K_DATA = 'pr_content';
@@ -550,66 +517,76 @@ const K_GH   = 'pr_gh';
 
 function getPwd(){ return localStorage.getItem(K_PWD) || DEFAULT_PWD; }
 
-/* ── OTP state ── */
+/* ── OTP box rendering ── */
+const MAX_BOXES = 16; // max visible boxes
 let otpVal = '';
+let isVerifying = false;
 
-function numInput(d){
-  if(otpVal.length >= 4) return;
-  // ripple
-  event && addRipple(event.currentTarget, event);
-  otpVal += d;
-  renderBoxes();
-  if(otpVal.length === 4) setTimeout(verifyOTP, 180);
-}
-
-function numDelete(){
-  if(!otpVal.length) return;
-  otpVal = otpVal.slice(0,-1);
-  renderBoxes();
-  clearErr();
+function focusOTP(){
+  const inp = document.getElementById('otp-hidden-input');
+  if(inp) inp.focus();
 }
 
 function renderBoxes(){
-  for(let i=0;i<4;i++){
-    const box = document.getElementById('b'+i);
-    const filled = i < otpVal.length;
-    const active = i === otpVal.length && otpVal.length < 4;
-    box.className = 'otp-box' + (filled?' filled':'') + (active?' active':'');
-    if(filled){
+  const pwd = getPwd();
+  const len = pwd.length;
+  const container = document.getElementById('otp-boxes');
+
+  // Decide how many boxes to show (clamp to MAX_BOXES)
+  const count = Math.min(len, MAX_BOXES);
+  const filled = otpVal.length;
+
+  // Adjust box size for longer passwords
+  const boxSize = count > 10 ? '36px' : count > 7 ? '48px' : '62px';
+  const gap     = count > 10 ? '6px'  : count > 7 ? '9px'  : '12px';
+  container.style.flexWrap = count > 8 ? 'wrap' : 'nowrap';
+  container.style.justifyContent = 'center';
+  container.style.gap = gap;
+
+  container.innerHTML = '';
+  for(let i = 0; i < count; i++){
+    const box = document.createElement('div');
+    const isFilled = i < filled;
+    const isActive = i === filled && filled < count;
+    box.className = 'otp-box' + (isFilled?' filled':'') + (isActive?' active':'');
+    box.id = 'b' + i;
+    box.style.width  = boxSize;
+    box.style.height = count > 10 ? '42px' : count > 7 ? '54px' : '66px';
+    box.style.fontSize = count > 10 ? '1rem' : '1.4rem';
+    if(isFilled){
       box.textContent = '●';
-    } else if(active){
+    } else if(isActive){
       box.innerHTML = '<span class="otp-cursor"></span>';
-    } else {
-      box.textContent = '';
     }
+    container.appendChild(box);
   }
+}
+
+function showBoxError(){
+  const boxes = document.querySelectorAll('.otp-box');
+  boxes.forEach(b=>{ b.classList.add('error'); b.classList.remove('active','filled'); });
+  setTimeout(()=>{ boxes.forEach(b=>b.classList.remove('error')); }, 500);
 }
 
 function verifyOTP(){
+  if(isVerifying) return;
   if(otpVal === getPwd()){
+    isVerifying = true;
     showSuccess();
   } else {
-    showError();
+    showBoxError();
+    document.getElementById('otp-err').textContent = '密碼錯誤，請再試一次';
+    setTimeout(()=>{
+      otpVal = '';
+      document.getElementById('otp-hidden-input').value = '';
+      renderBoxes();
+      document.getElementById('otp-err').textContent = '';
+    }, 700);
   }
 }
-
-function showError(){
-  // Shake all boxes
-  for(let i=0;i<4;i++){
-    const box = document.getElementById('b'+i);
-    box.classList.add('error');
-    setTimeout(()=>box.classList.remove('error'), 500);
-  }
-  document.getElementById('otp-err').textContent = '密碼錯誤，請再試一次';
-  setTimeout(()=>{ otpVal=''; renderBoxes(); clearErr(); }, 700);
-}
-
-function clearErr(){ document.getElementById('otp-err').textContent=''; }
 
 function showSuccess(){
-  // Hide input, show success
   document.getElementById('otp-input-screen').classList.add('hidden');
-  document.getElementById('otp-numpad').style.display = 'none';
   document.getElementById('otp-success-screen').classList.remove('hidden');
   setTimeout(enterAdmin, 1600);
 }
@@ -628,28 +605,41 @@ function doLogout(){
 
 function changePwd(){
   const v = document.getElementById('new-pwd').value.trim();
-  if(!v || !/^\d{4}$/.test(v)){ toast('PIN 必須為4位數字','err'); return; }
+  if(!v || v.length < 4){ toast('密碼至少4個字元','err'); return; }
   localStorage.setItem(K_PWD, v);
   document.getElementById('new-pwd').value='';
-  toast('PIN 已變更 ✓','ok');
+  toast('密碼已變更 ✓','ok');
 }
 
-// Ripple effect on numpad keys
-function addRipple(btn, e){
-  const r = document.createElement('span');
-  r.className = 'ripple';
-  const rect = btn.getBoundingClientRect();
-  r.style.left = (e.clientX - rect.left) + 'px';
-  r.style.top  = (e.clientY - rect.top) + 'px';
-  btn.appendChild(r);
-  setTimeout(()=>r.remove(), 550);
-}
+/* ── Hidden input event ── */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const inp = document.getElementById('otp-hidden-input');
+  if(!inp) return;
 
-// Keyboard support
-document.addEventListener('keydown', e=>{
-  if(document.getElementById('login-screen').style.display==='none') return;
-  if(e.key>='0'&&e.key<='9') numInput(e.key);
-  if(e.key==='Backspace') numDelete();
+  renderBoxes();
+  focusOTP();
+
+  inp.addEventListener('input', ()=>{
+    if(isVerifying) return;
+    otpVal = inp.value;
+    renderBoxes();
+    document.getElementById('otp-tap').style.display = 'none';
+  });
+
+  inp.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && otpVal.length > 0) verifyOTP();
+  });
+
+  // Re-focus on card click
+  document.getElementById('login-screen').addEventListener('click', focusOTP);
+
+  // Show tap hint when unfocused
+  inp.addEventListener('blur', ()=>{
+    if(!isVerifying) document.getElementById('otp-tap').style.display='';
+  });
+  inp.addEventListener('focus', ()=>{
+    document.getElementById('otp-tap').style.display='none';
+  });
 });
 
 // Auto-enter if already authed
